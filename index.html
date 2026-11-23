@@ -2,7 +2,15 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#5a3d26">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="A Reciclar">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.json">
 <title>¡A Reciclar! — Juego de cartas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
@@ -12,15 +20,19 @@
   --felt:#2e6b3a; --felt2:#1f4f2a; --ink:#2e2418; --orange:#e08a1e; --red:#c7452f; --good:#2f8f3f;
   --madera:#8b5a2b; --tela:#c2477a; --metal:#6f7e8c; --vidrio:#2f9e98; --plastico:#2f7fd1;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html{-webkit-text-size-adjust:100%}
+body{overscroll-behavior:none}
+button,.card,.rt,.seat,.step{-webkit-user-select:none;user-select:none}
 html,body{margin:0;height:100%;font-family:'Nunito',system-ui,sans-serif;color:var(--ink);overflow:hidden}
 body{background:#3b2a1c url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='60'%3E%3Cpath d='M0 30 Q75 10 150 30 T300 30' stroke='%23000' stroke-opacity='.08' fill='none' stroke-width='3'/%3E%3Cpath d='M0 50 Q75 35 150 50 T300 50' stroke='%23fff' stroke-opacity='.04' fill='none' stroke-width='2'/%3E%3C/svg%3E");background-color:#5a3d26}
 h1,h2,h3,.osw{font-family:'Oswald','Bahnschrift','Arial Narrow',sans-serif;letter-spacing:.5px}
 button{font-family:inherit;cursor:pointer}
 .hidden{display:none!important}
+#mbar,.sclose{display:none}
 
 /* ---------- LAYOUT ---------- */
-#app{display:grid;grid-template-columns:1fr 340px;height:100vh}
+#app{display:grid;grid-template-columns:1fr 340px;height:100vh;height:100dvh}
 #main{display:flex;flex-direction:column;min-width:0;min-height:0}
 #tableWrap{flex:1;position:relative;min-height:0;padding:14px 14px 6px}
 #table{position:absolute;inset:14px 14px 6px;border-radius:50% / 42%;background:radial-gradient(ellipse at 50% 45%,#3d8a4a 0%,var(--felt) 55%,var(--felt2) 100%);
@@ -172,7 +184,7 @@ button{font-family:inherit;cursor:pointer}
 
 /* overlays */
 .overlay{position:fixed;inset:0;background:rgba(25,18,10,.72);display:grid;place-items:center;z-index:100;backdrop-filter:blur(3px)}
-.modal{background:var(--cream);border-radius:20px;border:6px solid #8a6440;box-shadow:0 20px 50px rgba(0,0,0,.6);padding:22px 26px;max-width:min(860px,94vw);max-height:92vh;overflow:auto;position:relative}
+.modal{background:var(--cream);border-radius:20px;border:6px solid #8a6440;box-shadow:0 20px 50px rgba(0,0,0,.6);padding:22px 26px;max-width:min(860px,94vw);max-height:92vh;max-height:92dvh;overflow:auto;position:relative}
 .modal .close{position:absolute;right:12px;top:10px;border:0;background:none;font-size:26px;color:var(--brown)}
 #menu .modal{width:560px;text-align:center}
 .menu-logo{width:200px;height:200px;margin:0 auto 4px;border-radius:24px;background:var(--back) center/cover;border:5px solid #f3ead4;box-shadow:0 8px 20px rgba(0,0,0,.4)}
@@ -193,7 +205,7 @@ button{font-family:inherit;cursor:pointer}
 .rules table{border-collapse:collapse;font-size:13px;margin:6px 0}
 .rules td,.rules th{border:1px solid #d8c6a2;padding:3px 8px}
 .rules th{background:#eadfc8}
-#tablaImg{max-height:80vh;max-width:100%;display:block;border-radius:10px}
+#tablaImg{max-height:80vh;max-height:80dvh;max-width:100%;display:block;border-radius:10px}
 .endt{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
 .endt th{background:var(--green);color:#fff;padding:6px;font-size:12px;text-transform:uppercase}
 .endt td{padding:6px;text-align:center;border-bottom:1px solid #e0d2b4}
@@ -229,10 +241,125 @@ button{font-family:inherit;cursor:pointer}
   .seat .backs{height:34px}
   .mini-back{width:24px;height:32px}
 }
+
+/* ================== MÓVIL / PANTALLA CHICA ================== */
+@media (max-width:900px),(max-height:520px){
+  #app{display:flex;flex-direction:column}
+  #mbar{display:flex;align-items:center;gap:10px;flex:none;background:var(--green);color:#fff;
+    padding:calc(6px + env(safe-area-inset-top)) calc(10px + env(safe-area-inset-right)) 6px calc(10px + env(safe-area-inset-left));
+    border-bottom:3px solid #7a5434}
+  #mbar .mlogo{width:34px;height:34px;border-radius:8px;background:var(--back) center/cover;border:2px solid #f3ead4;flex:none}
+  #mbar .mt{flex:1;min-width:0;line-height:1.1}
+  #mbar .mt b{display:block;font-family:'Oswald','Bahnschrift','Arial Narrow',sans-serif;font-size:17px;letter-spacing:.5px}
+  #mbar .mt small{display:block;font-size:11px;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #mbar .mscore{font-family:'Oswald','Bahnschrift','Arial Narrow',sans-serif;font-size:20px;background:rgba(0,0,0,.25);border-radius:10px;padding:3px 10px;line-height:1.1;text-align:center}
+  #mbar .mscore small{display:block;font-family:'Nunito';font-size:9px;opacity:.85}
+  #mbar button{width:44px;height:44px;border:0;border-radius:12px;background:#fffaf0;font-size:20px}
+
+  #main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+    padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+  #tableWrap{flex:none;display:flex;flex-direction:column;gap:6px;padding:6px 6px 8px}
+  #table{inset:6px 6px 8px;border-radius:18px;
+    box-shadow:inset 0 0 0 5px #7a5434,inset 0 0 0 7px #4a311d,inset 0 0 30px rgba(0,0,0,.5),0 6px 16px rgba(0,0,0,.4)}
+  #table::after{inset:7px;border-radius:12px}
+
+  /* rivales: fila horizontal con scroll en vez de óvalo */
+  #seats{position:relative;z-index:3;order:1;display:flex;gap:8px;overflow-x:auto;padding:12px 14px 4px;-webkit-overflow-scrolling:touch}
+  #seats .seat{position:static;transform:none;flex:none;width:150px;padding:5px 7px;border-width:2px;border-radius:12px;box-shadow:0 3px 8px rgba(0,0,0,.4)}
+  #seats .seat:first-child{margin-left:auto}
+  #seats .seat:last-child{margin-right:auto}
+  #seats .seat.me,.bubble{display:none!important}
+  #seats .seat.active{box-shadow:0 0 0 3px #ffd54a}
+  #seats .ava{width:28px;height:28px;font-size:18px}
+  #seats .nm{font-size:13px}
+  #seats .sub,#seats .pts small{display:none}
+  #seats .pts{font-size:16px}
+  #seats .backs{height:25px;margin-top:3px}
+  #seats .mini-back{width:17px;height:23px;margin-left:-11px;border-width:1px}
+  #seats .mini-back:first-child{margin-left:0}
+  #seats .hc{font-size:12px;margin-left:6px}
+  #seats .crafted{min-height:22px;margin-top:3px;gap:3px}
+  #seats .citem{width:22px;height:22px}
+  #seats .citem img{max-width:18px;max-height:18px}
+  #seats .citem b{font-size:9px;line-height:12px;padding:0 3px}
+  #seats .none{font-size:10px}
+
+  /* mesa central */
+  #tableWrap #center{position:relative;left:auto;top:auto;transform:none;order:2;justify-content:center;gap:10px;padding:2px 8px}
+  .card,#deck,#landfill{width:60px;height:78px}
+  .card.sm{width:46px;height:60px}
+  #landfill{font-size:20px;border-width:2px}
+  #trashZone{min-width:0;min-height:78px;padding:4px;gap:4px;flex-wrap:wrap}
+  #trashZone .empty{font-size:11px;padding:0 4px;text-align:center}
+  .pile:nth-child(2){flex:1;min-width:0;max-width:210px}
+  .pile .lbl{font-size:10px;margin-top:3px;letter-spacing:.5px}
+  .pile .cnt{font-size:10px;line-height:1.2}
+  #banner{position:relative;left:auto;bottom:auto;order:3;align-self:center;white-space:normal;text-align:center;font-size:13px;padding:6px 14px;margin:0 8px;max-width:calc(100% - 16px)}
+  #lastRound{position:relative;right:auto;bottom:auto;order:4;text-align:center;font-size:12px}
+  #lastRound:empty{display:none}
+
+  /* parte de abajo: mano, acciones, tabla de recetas (todo en columna) */
+  #bottom{flex:none;display:flex;flex-direction:column;gap:6px;border-top-width:3px;box-shadow:none;padding:6px 8px calc(10px + env(safe-area-inset-bottom))}
+  #actionZone{grid-row:auto;grid-column:auto;padding:8px 10px;gap:6px}
+  #hand{min-height:96px;gap:12px;padding:6px 10px 4px;-webkit-overflow-scrolling:touch}
+  .group{padding-top:14px}
+  .group .card{margin-left:-42px}
+  .group .card:first-child{margin-left:0}
+  .zt{font-size:13px;flex-wrap:wrap;row-gap:0}
+  .zt span{font-size:11px}
+  #actionZone .amsg[style]{display:none}
+  .amsg{font-size:13px}
+  .btn{min-height:44px;padding:10px 12px;font-size:15px}
+  .stepper button{width:44px;height:44px}
+  .step{font-size:10px}
+  #recipes{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+  .rt{flex:none;width:176px;min-height:56px}
+  .rt img{width:30px;height:30px}
+  .rt .rn{font-size:12px}
+
+  /* panel lateral → cajón a pantalla completa */
+  #side{position:fixed;inset:0;z-index:90;border-left:0;transform:translateY(100%);visibility:hidden;transition:transform .25s,visibility 0s .25s;padding-top:env(safe-area-inset-top)}
+  #side.open{transform:none;visibility:visible;transition:transform .25s}
+  #side header .sclose{display:block;margin-left:auto;width:44px;height:44px;border:0;border-radius:12px;background:rgba(255,255,255,.2);color:#fff;font-size:20px}
+  .sfoot{padding:8px 12px calc(10px + env(safe-area-inset-bottom))}
+  .sfoot button{min-height:44px;font-size:14px}
+  #log{max-height:none}
+
+  /* ventanas */
+  .overlay{padding:calc(8px + env(safe-area-inset-top)) 8px calc(8px + env(safe-area-inset-bottom))}
+  .modal{padding:16px 14px;max-width:100%;max-height:calc(100dvh - 16px);border-width:4px;border-radius:16px}
+  #menu .modal{width:100%}
+  .menu-logo{width:96px;height:96px;border-width:3px}
+  .tagline{font-size:13px;margin:2px 0 8px}
+  .field{margin:10px 0}
+  .field input{width:100%;max-width:240px}
+  .seg button{padding:8px 10px;min-width:46px;font-size:15px}
+  .seg.diff button{min-width:0;flex:1 1 90px;font-size:13px;padding:6px 4px}
+  .bigbtn{width:100%;font-size:19px;padding:12px 16px}
+  #endBox{width:100%!important}
+  .winbanner .trophy{font-size:40px}
+  .winbanner h2{font-size:24px}
+  .endt{font-size:12px}
+  .endt th{font-size:10px;padding:4px 2px}
+  .endt td{padding:5px 2px}
+  .endt td.tot{font-size:16px}
+  .reveal .rw{flex-wrap:wrap}
+  .reveal .rw b,.reveal .rw .rh2{width:auto}
+  .rules table{font-size:12px}
+  .rules td,.rules th{padding:3px 4px}
+  .flycard{width:52px;height:68px}
+  .toast{top:calc(10px + env(safe-area-inset-top));max-width:92vw;text-align:center}
+}
 </style>
 </head>
 <body>
 <div id="app">
+  <div id="mbar">
+    <div class="mlogo"></div>
+    <div class="mt"><b>¡A RECICLAR!</b><small id="mInfo"></small></div>
+    <div class="mscore"><span id="mScore">0</span><small>tu puntaje</small></div>
+    <button id="bSide" aria-label="Puntajes, registro y menú">📊</button>
+  </div>
   <div id="main">
     <div id="tableWrap">
       <div id="table"></div>
@@ -258,7 +385,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
   </div>
   <aside id="side">
-    <header><div class="logo"></div><div><h2>¡A RECICLAR!</h2><small id="hdrInfo"></small></div></header>
+    <header><div class="logo"></div><div><h2>¡A RECICLAR!</h2><small id="hdrInfo"></small></div><button class="sclose" id="bSideClose" aria-label="Cerrar">✕</button></header>
     <div class="sbody">
       <div class="box">
         <h3>Tu puntaje</h3>
@@ -747,6 +874,7 @@ function renderAll(){
   const ft = futureTurns();
   $('lastRound').textContent = G.over ? '' : G.deck.length===0 ? '⚠️ ¡Último turno de la partida!' : G.deck.length < G.players.length ? `⚠️ Última ronda: quedan ${G.deck.length} cartas` : '';
   $('hdrInfo').textContent = `Ronda ${G.turn} · ${G.players.length} jugadores · ${DIFF_LABEL[cfg.diff]}`;
+  updateMobile(cp, myTurn, meS);
 
   renderHand(me);
   renderActions(me, myTurn);
@@ -765,7 +893,8 @@ function renderAll(){
   $('log').innerHTML = G.log.slice().reverse().map(l=>`<div class="${l.me?'me':''}">${esc(l.t)}</div>`).join('');
 }
 
-function renderHand(me){
+function renderHand(me){ const _sl=$('hand').scrollLeft; _renderHand(me); $('hand').scrollLeft=_sl; }
+function _renderHand(me){
   const h=me.hand, n=handCount(h);
   $('handInfo').textContent = `${n} cartas · suman ${fmt(handPenalty(h))} si quedan al final`;
   // cartas resaltadas
@@ -840,7 +969,8 @@ function renderActions(me, myTurn){
   az.innerHTML = `${steps('end')}<div class="amsg">Terminando turno…</div>`;
 }
 
-function renderRecipes(me, myTurn){
+function renderRecipes(me, myTurn){ const _sl=$('recipes').scrollLeft; _renderRecipes(me, myTurn); $('recipes').scrollLeft=_sl; }
+function _renderRecipes(me, myTurn){
   const h=me.hand, canAct = myTurn && G.phase==='craft' && !ui.busy;
   $('recipes').innerHTML = RECIPES.map(r=>{
     const mq=qtyRange(h,r);
@@ -858,7 +988,7 @@ function fly(fromEl, toEl, img, dur){
   const d=document.createElement('div');
   d.className='flycard'+(img?'':' back');
   if(img) d.style.backgroundImage=`url(${img})`;
-  d.style.left=(a.left+a.width/2-35)+'px'; d.style.top=(a.top+a.height/2-45)+'px';
+  const fw=isMobile()?26:35, fh=isMobile()?34:45; d.style.left=(a.left+a.width/2-fw)+'px'; d.style.top=(a.top+a.height/2-fh)+'px';
   document.body.appendChild(d);
   const dx=(b.left+b.width/2)-(a.left+a.width/2), dy=(b.top+b.height/2)-(a.top+a.height/2);
   const an=d.animate([{transform:'translate(0,0) rotate(0) scale(1)'},{transform:`translate(${dx}px,${dy}px) rotate(${dx>0?8:-8}deg) scale(.85)`}],{duration:dur,easing:'cubic-bezier(.3,.7,.3,1)',fill:'forwards'});
@@ -879,7 +1009,7 @@ function segInit(id, key, parse){
   $(id).querySelectorAll('button').forEach(b=>b.onclick=()=>{ $(id).querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); cfg[key]=parse(b.dataset.v); });
 }
 segInit('segPlayers','players',Number); segInit('segDiff','diff',String); segInit('segSpeed','speed',Number);
-function showMenu(){ $('endOv').classList.add('hidden'); $('confirmOv').classList.add('hidden'); if(G){G.token=null; G.over=true;} $('menu').classList.remove('hidden'); }
+function showMenu(){ $('side').classList.remove('open'); $('endOv').classList.add('hidden'); $('confirmOv').classList.add('hidden'); if(G){G.token=null; G.over=true;} $('menu').classList.remove('hidden'); }
 $('bStart').onclick=()=>{ cfg.name=$('inName').value.trim()||'Vos'; $('menu').classList.add('hidden'); newGame(); };
 $('bRules').onclick=$('bRules2').onclick=()=>$('rulesOv').classList.remove('hidden');
 $('bTabla').onclick=()=>$('tablaOv').classList.remove('hidden');
@@ -892,6 +1022,22 @@ document.addEventListener('keydown', e=>{
   if(!G||G.over||!curP().isHuman) return;
   if((e.key===' '||e.key==='Enter') && G.phase==='draw' && document.activeElement.tagName!=='INPUT'){ e.preventDefault(); humanDraw(); }
 });
+/* ---------- móvil ---------- */
+const MQ = window.matchMedia('(max-width:900px),(max-height:520px)');
+function isMobile(){ return MQ.matches; }
+function updateMobile(cp, myTurn, meS){
+  $('mScore').textContent = fmt(meS.total);
+  $('mInfo').textContent = 'Ronda ' + G.turn + ' · ' + G.players.length + ' jugadores';
+  if(!isMobile() || G.over) return;
+  if(!myTurn && cp.bubble) $('banner').textContent = cp.ava + ' ' + cp.name + ': ' + cp.bubble;
+  const el = seatEl(G.cur), box = $('seats');
+  if(el && G.cur!==0 && (el.offsetLeft < box.scrollLeft || el.offsetLeft+el.offsetWidth > box.scrollLeft+box.clientWidth))
+    box.scrollTo({left: el.offsetLeft - (box.clientWidth-el.offsetWidth)/2, behavior:'smooth'});
+}
+$('bSide').onclick = ()=>$('side').classList.add('open');
+$('bSideClose').onclick = ()=>$('side').classList.remove('open');
+['gesturestart','gesturechange','gestureend'].forEach(ev=>document.addEventListener(ev, e=>e.preventDefault(), {passive:false}));
+if('serviceWorker' in navigator) window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
 window.addEventListener('resize', ()=>{ if(G) renderAll(); });
 // Atajo: a_reciclar.html#jugar=4 empieza directo con 4 jugadores
 const hm = location.hash.match(/jugar=(\d)/);
